@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Excel: repaso y función SI</title>
+<style>
+:root{--bg:#f2faf5;--card:#fff;--ink:#17261d;--mut:#5a6e62;--g:#107c41;--g2:#21a366;--gl:#e3f3ea;--ln:#cfe4d6;--bl:#185abd;--or:#c43e1c;--ok:#0f7b3f;--bad:#b3261e;--hd:#107c41;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a13;--card:#16261c;--ink:#e6f2ea;--mut:#9bb3a4;--g:#35b872;--g2:#2a9d62;--gl:#1d3526;--ln:#2a4636;--bl:#6ea2ff;--or:#ff8a65;--ok:#5fd68f;--bad:#ff8a80;--hd:#1c6b43}}
+:root[data-theme="dark"]{--bg:#0e1a13;--card:#16261c;--ink:#e6f2ea;--mut:#9bb3a4;--g:#35b872;--g2:#2a9d62;--gl:#1d3526;--ln:#2a4636;--bl:#6ea2ff;--or:#ff8a65;--ok:#5fd68f;--bad:#ff8a80;--hd:#1c6b43}
+html{height:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+main,header .in,nav .in{max-width:980px;margin:0 auto;padding:0 18px}
+header{background:linear-gradient(120deg,var(--hd),#21a366);color:#fff;padding:44px 0 40px}
+header h1{font-size:clamp(28px,5vw,46px);line-height:1.1;margin:0 0 10px;font-weight:700}
+header p{margin:0;max-width:60ch;opacity:.95;font-size:18px}
+.grid{display:inline-grid;grid-template-columns:repeat(4,28px);gap:2px;margin-top:22px}
+.grid i{height:18px;background:rgba(255,255,255,.22);border-radius:2px}.grid i:nth-child(5n){background:#fff}
+nav{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--ln);padding-top:env(safe-area-inset-top,0px)}
+nav .in{display:flex;gap:4px;overflow-x:auto;padding-top:6px;padding-bottom:6px}
+nav a{white-space:nowrap;padding:8px 14px;border-radius:6px;color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+nav a:hover,nav a:focus-visible{background:var(--gl);color:var(--g);outline:none}
+section{padding:36px 0 8px}
+h2{font-size:28px;margin:0 0 6px;color:var(--g)}
+.sub{color:var(--mut);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:18px;margin-bottom:16px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{border:1px solid var(--ln);padding:7px 10px;text-align:left}
+th{background:var(--gl);color:var(--g)}
+code,.f{font-family:Consolas,"Cascadia Mono",monospace;background:var(--gl);padding:2px 6px;border-radius:4px;font-size:.92em}
+.tip{border-left:4px solid var(--g2);background:var(--gl);padding:10px 14px;border-radius:0 6px 6px 0;margin:12px 0}
+.warn{border-left-color:var(--or);background:color-mix(in srgb,var(--or) 12%,var(--card))}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+button,.chip{font:inherit;cursor:pointer}
+.tab{border:1px solid var(--ln);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:6px;font-weight:600}
+.tab[aria-selected=true]{background:var(--g);border-color:var(--g);color:#fff}
+.btn{background:var(--g);color:#fff;border:0;padding:9px 18px;border-radius:6px;font-weight:600}
+.btn.alt{background:var(--card);color:var(--g);border:1px solid var(--g)}
+.btn:hover{filter:brightness(1.08)}
+:focus-visible{outline:3px solid var(--bl);outline-offset:2px}
+.chip{border:1px solid var(--g2);background:var(--card);color:var(--g);padding:3px 9px;border-radius:99px;font-size:13px;font-weight:600;margin-left:6px}
+.chip:hover{background:var(--gl)}
+.fx{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--ln);border-radius:6px;padding:6px 10px;margin:10px 0}
+.fx b{color:var(--g);font-style:italic;font-family:Georgia,serif}
+.fx input,.row input,select,.pi{flex:1;font:inherit;font-family:Consolas,monospace;border:0;background:transparent;color:var(--ink);min-width:0}
+.fx input:focus{outline:none}
+.sheet td,.sheet th{padding:3px 10px;text-align:left;font-size:14px;white-space:nowrap}
+.sheet th{text-align:center;width:1%}.sheet td:first-child{background:var(--gl);color:var(--g);font-weight:700;text-align:center}
+.res{font-size:20px;font-weight:700;padding:10px 14px;border-radius:6px;background:var(--gl);min-height:46px}
+.res.err{color:var(--bad)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.two{grid-template-columns:1fr}}
+.ex{padding:12px 0;border-bottom:1px dashed var(--ln)}.ex:last-child{border:0}
+.q{padding:14px 0;border-bottom:1px solid var(--ln)}
+.q .row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.q .row input{border:1px solid var(--ln);border-radius:6px;padding:8px 10px;background:var(--card);flex:1 1 220px}
+.fb{margin-top:6px;font-weight:600}.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.bar{height:10px;background:var(--gl);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--g2);transition:width .4s}
+.fin{padding:6px 0 40px;text-align:center;color:var(--mut)}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar i{transition:none}}
+</style></head><body>
+<header><div class="in"><h1>Excel: repaso y función SI</h1><p>Todas las fórmulas usan la sintaxis en español, con punto y coma (<code style="color:#17261d">;</code>) entre argumentos. Leé, copiá y probá cada una en la hoja de práctica.</p><div class="grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></header>
+<nav><div class="in"><a href="#basico">Lo básico</a><a href="#funciones">Funciones</a><a href="#lab">Laboratorio</a><a href="#practica">Práctica</a><a href="#errores">Errores</a><a href="#resumen">Resumen</a></div></nav>
+<main>
+
+<section id="basico"><h2>Lo básico que hay que recordar</h2><p class="sub">Antes de las funciones, estas seis reglas.</p>
+<div class="card scroll"><table><tr><th>Concepto</th><th>Cómo se escribe</th><th>Ejemplo</th></tr>
+<tr><td>Toda fórmula empieza con <code>=</code></td><td><code>=</code> + función o cuenta</td><td><code>=B2*C2</code></td></tr>
+<tr><td>Rango de celdas</td><td>primera celda <code>:</code> última celda</td><td><code>B2:B6</code> (de B2 hasta B6)</td></tr>
+<tr><td>Separador de argumentos</td><td>punto y coma</td><td><code>=SUMA(B2:B6)</code></td></tr>
+<tr><td>Texto dentro de una fórmula</td><td>entre comillas</td><td><code>"Yoga"</code></td></tr>
+<tr><td>Copiar una fórmula hacia abajo</td><td>arrastrar el cuadradito de la esquina inferior derecha de la celda</td><td>—</td></tr>
+<tr><td>Referencia absoluta</td><td><code>$</code> antes de la columna y la fila (tecla <b>F4</b>)</td><td><code>$B$1</code></td></tr></table>
+<div class="tip"><b>Referencia absoluta:</b> cuando copiás una fórmula hacia abajo, las referencias se corren una fila. Si una celda tiene que quedarse siempre fija (por ejemplo, un porcentaje), se escribe con <code>$</code>: <code>$B$1</code>.</div></div></section>
+
+<section id="funciones"><h2>Las funciones, una por una</h2><p class="sub">Elegí una pestaña. Cada fórmula tiene un botón <b>Probar</b> que la manda al laboratorio.</p>
+<div class="tabs" role="tablist" id="tabs"></div><div id="fcard" class="card" role="tabpanel"></div></section>
+
+<section id="lab"><h2>Laboratorio</h2><p class="sub">Escribí una fórmula sobre esta hoja y mirá el resultado al instante. Funciona con SUMA, PROMEDIO, MAX, MIN, CONCAT, CONTAR.SI, SUMAR.SI y SI.</p>
+<div class="card"><div class="scroll"><table class="sheet" id="sheet"></table></div>
+<div class="fx"><b>fx</b><input id="fin" aria-label="Fórmula" value='=CONTAR.SI(B2:B7; "Perro")' autocomplete="off" spellcheck="false"></div>
+<div class="res" id="fres" aria-live="polite"></div>
+<p style="margin:12px 0 0">Ideas: <span id="ideas"></span></p></div>
+
+<div class="two"><div class="card"><h3 style="margin-top:0">Simulador de SI</h3>
+<p>Armá la condición y mirá qué muestra la celda.</p>
+<div class="fx"><span>Valor</span><input class="pi" id="sv" type="number" value="25"><select id="so" aria-label="Operador"><option>&gt;=</option><option>&gt;</option><option>&lt;=</option><option>&lt;</option><option>=</option><option>&lt;&gt;</option></select><input class="pi" id="st" type="number" value="18"></div>
+<div class="fx"><span>Si se cumple</span><input class="pi" id="sa" value="Mayor"><span>Si no</span><input class="pi" id="sb" value="Menor"></div>
+<div class="f" id="sf" style="display:block;margin:8px 0"></div><div class="res" id="sr"></div></div>
+<div class="card"><h3 style="margin-top:0">Formato moneda</h3>
+<p>Cambia cómo se ve, no el valor.</p>
+<div class="fx"><span>Número</span><input class="pi" id="mv" type="number" value="125000"></div>
+<label><input type="checkbox" id="mc" checked> Aplicar formato moneda</label>
+<div class="res" id="mr" style="margin-top:10px"></div></div></div></section>
+
+<section id="practica"><h2>Práctica</h2><p class="sub">Resolvé cada consigna sobre la hoja del laboratorio. Cuenta el resultado, no solo la fórmula.</p>
+<div class="card"><div class="bar"><i id="pb"></i></div><p id="pt" style="margin:8px 0 0;color:var(--mut)">0 de 8 resueltas</p><div id="qs"></div></div></section>
+
+<section id="errores"><h2>Errores que muestra Excel</h2>
+<div class="card scroll"><table><tr><th>Error</th><th>Qué significa</th><th>Qué revisar</th></tr>
+<tr><td><code>#¿NOMBRE?</code></td><td>Excel no reconoce algo de la fórmula</td><td>el nombre de la función está bien escrito; los textos tienen comillas</td></tr>
+<tr><td><code>#¡VALOR!</code></td><td>se usa un texto donde hace falta un número</td><td>las celdas de la cuenta tienen números</td></tr>
+<tr><td><code>#¡DIV/0!</code></td><td>se divide por cero o por una celda vacía</td><td>el rango del <code>PROMEDIO</code> tiene datos</td></tr>
+<tr><td><code>#####</code></td><td>la columna es muy angosta para mostrar el número</td><td>ensanchá la columna</td></tr></table></div></section>
+
+<section id="resumen"><h2>Resumen para tener a mano</h2>
+<div class="card scroll"><table><tr><th>Quiero…</th><th>Uso</th><th>Ejemplo</th></tr>
+<tr><td>Sumar un rango</td><td><code>SUMA</code></td><td><code>=SUMA(B2:B6)</code></td></tr>
+<tr><td>Calcular el promedio</td><td><code>PROMEDIO</code></td><td><code>=PROMEDIO(B2:B6)</code></td></tr>
+<tr><td>Valor más alto / más bajo</td><td><code>MAX</code> / <code>MIN</code></td><td><code>=MAX(B2:B6)</code></td></tr>
+<tr><td>Unir textos</td><td><code>CONCAT</code></td><td><code>=CONCAT(A2; " - "; B2)</code></td></tr>
+<tr><td>Contar con condición</td><td><code>CONTAR.SI</code></td><td><code>=CONTAR.SI(B2:B6; "Gato")</code></td></tr>
+<tr><td>Sumar con condición</td><td><code>SUMAR.SI</code></td><td><code>=SUMAR.SI(B2:B6; "Yoga"; C2:C6)</code></td></tr>
+<tr><td>Elegir entre dos resultados</td><td><code>SI</code></td><td><code>=SI(B2>=18; "Mayor"; "Menor")</code></td></tr>
+<tr><td>Mostrar importes con $</td><td>Formato moneda</td><td>Inicio &gt; Número &gt; Moneda</td></tr>
+<tr><td>Dejar una celda fija</td><td>Referencia absoluta</td><td><code>$E$1</code> (tecla F4)</td></tr></table></div></section>
+</main><div class="fin">Apunte de Excel · repaso y función SI</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+/* ---------- hoja ---------- */
+const G={A1:"Mascota",B1:"Especie",C1:"Edad",E1:"Socio",F1:"Actividad",G1:"Cuota"};
+[["Luna","Perro",3],["Tom","Gato",7],["Rocco","Perro",5],["Nube","Conejo",2],["Max","Perro",9],["Michi","Gato",6]].forEach((r,i)=>r.forEach((v,j)=>G["ABC"[j]+(i+2)]=v));
+[["Ana","Yoga",18000],["Beto","Pilates",22000],["Cora","Yoga",18000],["Dani","Funcional",25000],["Eli","Yoga",18000],["Fede","Pilates",22000]].forEach((r,i)=>r.forEach((v,j)=>G["EFG"[j]+(i+2)]=v));
+$("#sheet").innerHTML="<tr><th></th>"+"ABCDEFG".split("").map(c=>"<th>"+c+"</th>").join("")+"</tr>"+[1,2,3,4,5,6,7].map(r=>"<tr><td>"+r+"</td>"+"ABCDEFG".split("").map(c=>"<td>"+esc(G[c+r]??"")+"</td>").join("")+"</tr>").join("");
+/* ---------- evaluador ---------- */
+const flat=a=>a.flat(9);
+const nums=a=>flat(a).filter(x=>typeof x==="number");
+const cmp=(v,c)=>{if(typeof c==="number")return v===c;const m=String(c).match(/^(<=|>=|<>|<|>|=)?(.*)$/),o=m[1]||"=",t=m[2],n=t!==""&&!isNaN(t.replace(",","."))?+t.replace(",","."):null;
+ if(n!==null&&typeof v==="number"){return{"=":v===n,"<>":v!==n,">":v>n,"<":v<n,">=":v>=n,"<=":v<=n}[o]}
+ const a=String(v).toLowerCase(),b=t.toLowerCase();return o==="<>"?a!==b:a===b};
+const F={SUMA:(...a)=>nums(a).reduce((x,y)=>x+y,0),
+PROMEDIO:(...a)=>{const n=nums(a);if(!n.length)throw"#¡DIV/0!";return n.reduce((x,y)=>x+y,0)/n.length},
+MAX:(...a)=>Math.max(...nums(a),...(nums(a).length?[]:[0])),MIN:(...a)=>nums(a).length?Math.min(...nums(a)):0,
+CONCAT:(...a)=>flat(a).join(""),
+CONTARSI:(r,c)=>r.filter(v=>cmp(v,c)).length,
+SUMARSI:(r,c,s)=>s.filter((v,i)=>cmp(r[i],c)&&typeof v==="number").reduce((x,y)=>x+y,0),
+SI:(c,a,b)=>c?a:b};
+const cell=a=>{const v=G[a.replace(/\$/g,"")];return v===undefined?"":v};
+const rng=(a,b)=>{const p=s=>s.replace(/\$/g,"").match(/([A-Z])(\d+)/),x=p(a),y=p(b),o=[];
+ for(let c=x[1].charCodeAt(0);c<=y[1].charCodeAt(0);c++)for(let r=+x[2];r<=+y[2];r++)o.push(cell(String.fromCharCode(c)+r));return o};
+function ev(src){
+ let s=src.trim();if(s[0]!=="=")throw"Empezá la fórmula con =";s=s.slice(1);
+ const re=/\s+|"([^"]*)"|([A-Z][A-Z.]*)(?=\()|(\$?[A-Z]\$?\d+)(?::(\$?[A-Z]\$?\d+))?|\d+(?:,\d+)?|<>|[<>]=|=|;|./gi;let out="",m;
+ while((m=re.exec(s))){const t=m[0];
+  if(/^\s+$/.test(t))continue;
+  if(m[1]!==undefined&&t[0]==='"')out+=JSON.stringify(m[1]);
+  else if(m[2]){const k=m[2].toUpperCase().replace(".","");if(!F[k])throw"#¿NOMBRE?";out+="F."+k}
+  else if(m[3])out+=m[4]?`R("${m[3].toUpperCase()}","${m[4].toUpperCase()}")`:`C("${m[3].toUpperCase()}")`;
+  else if(/^\d/.test(t))out+=t.replace(",",".");
+  else if(t==="<>")out+="!==";else if(t==="=")out+="===";else if(t===";")out+=",";
+  else if(/^[()+\-*\/<>&^]$|^[<>]=$/.test(t))out+=t==="&"?"+":t==="^"?"**":t;
+  else throw"#¿NOMBRE?"}
+ let r;try{r=new Function("F","C","R","return "+out)(F,cell,rng)}catch(e){throw typeof e==="string"?e:(/ReferenceError/.test(e)?"#¿NOMBRE?":"#¡VALOR!")}
+ if(typeof r==="number"&&!isFinite(r))throw"#¡DIV/0!";return r}
+const fmt=v=>typeof v==="number"?v.toLocaleString("es-AR",{maximumFractionDigits:4}):typeof v==="boolean"?(v?"VERDADERO":"FALSO"):String(v);
+function run(){const r=$("#fres");try{r.className="res";r.textContent=fmt(ev($("#fin").value))}catch(e){r.className="res err";r.textContent=e}}
+$("#fin").addEventListener("input",run);
+function toLab(f){$("#fin").value=f;run();$("#lab").scrollIntoView();$("#fin").focus()}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(b)toLab(b.dataset.f)});
+$("#ideas").innerHTML=['=SUMA(G2:G7)','=PROMEDIO(C2:C7)','=MAX(C2:C7)','=CONCAT(A2; " - "; B2)','=CONTAR.SI(C2:C7; ">5")','=SUMAR.SI(F2:F7; "Yoga"; G2:G7)','=SI(C2>=5; "Senior"; "Joven")'].map(f=>`<button class="chip" data-f="${esc(f)}">${esc(f)}</button>`).join(" ");
+/* ---------- fichas ---------- */
+const T=(h,rows)=>`<div class="scroll"><table><tr><th></th>${h.map((_,i)=>"<th>"+"ABCD"[i]+"</th>").join("")}</tr>${[h,...rows].map((r,i)=>`<tr><td><b>${i+1}</b></td>${r.map(c=>`<td>${String(c).startsWith("=")?"<code>"+esc(c)+"</code>":esc(c)}</td>`).join("")}</tr>`).join("")}</table></div>`;
+const X=a=>`<div class="scroll"><table><tr><th>Qué se quiere saber</th><th>Fórmula</th><th>Resultado</th></tr>${a.map(r=>`<tr><td>${r[0]}</td><td><code>${esc(r[1])}</code>${r[3]?`<button class="chip" data-f="${esc(r[1])}">Probar</button>`:""}</td><td><b>${esc(r[2])}</b></td></tr>`).join("")}</table></div>`;
+const P=a=>`<div class="scroll"><table><tr><th>Parámetro</th><th>Qué es</th></tr>${a.map(r=>`<tr><td><code>${r[0]}</code></td><td>${r[1]}</td></tr>`).join("")}</table></div>`;
+const S=s=>`<p><b>Sintaxis</b></p><p><span class="f">${esc(s)}</span></p>`;
+const W=(t,c)=>`<div class="tip ${c||""}">${t}</div>`;
+const pet=`<p><b>Hoja de ejemplo:</b> la del laboratorio (mascotas en A:C y socios en E:G).</p>`;
+const D=[
+{k:"SUMA",h:`<h3>SUMA</h3><p>Suma todos los números de un rango.</p>${S("=SUMA(rango)")}${P([["rango","las celdas que se quieren sumar, por ejemplo <code>B2:B5</code>"]])}<p><b>Ejemplo: gastos de un viaje</b></p>${T(["Gasto","Importe"],[["Nafta",35000],["Peajes",8000],["Comida",22000],["Hospedaje",60000],["Total","=SUMA(B2:B5)"]])}<p>Resultado en B6: <b>125000</b></p>${W("<b>Error frecuente:</b> dejar afuera la última fila del rango. Revisá que el rango empiece en el primer dato y termine en el último.","warn")}<button class="chip" data-f="=SUMA(G2:G7)" style="margin:0">Probar con las cuotas</button>`},
+{k:"PROMEDIO",h:`<h3>PROMEDIO</h3><p>Calcula el promedio: la suma de los valores dividida por la cantidad de valores.</p>${S("=PROMEDIO(rango)")}${P([["rango","las celdas de las que se quiere el promedio"]])}<p><b>Ejemplo: goles de un equipo en 5 partidos</b></p>${T(["Partido","Goles"],[[1,2],[2,0],[3,3],[4,1],[5,4],["Promedio","=PROMEDIO(B2:B6)"]])}<p>Resultado en B7: <b>2</b> (2+0+3+1+4 = 10 y 10 ÷ 5 = 2).</p><p><b>Promedio por fila:</b> si cada fila tiene varios valores (tres notas en B2, C2 y D2), la fórmula es <code>=PROMEDIO(B2:D2)</code> y se copia hacia abajo.</p>${W("Si el resultado tiene muchos decimales, se reducen con “Disminuir decimales” en la pestaña <b>Inicio</b>. Eso cambia cómo se ve, no el valor.")}<button class="chip" data-f="=PROMEDIO(C2:C7)" style="margin:0">Probar con las edades</button>`},
+{k:"MAX y MIN",h:`<h3>MAX y MIN</h3><p><code>MAX</code> devuelve el valor <b>más alto</b> de un rango. <code>MIN</code> devuelve el <b>más bajo</b>.</p>${S("=MAX(rango)\n=MIN(rango)")}${P([["rango","las celdas donde se busca el valor más alto o más bajo"]])}<p><b>Ejemplo: temperaturas de la semana</b></p>${T(["Día","Temperatura (°C)"],[["Lunes",18],["Martes",22],["Miércoles",15],["Jueves",27],["Viernes",20],["Más calurosa","=MAX(B2:B6)"],["Más fría","=MIN(B2:B6)"]])}<p>Resultados: B7 = <b>27</b> y B8 = <b>15</b>.</p>${W("MAX y MIN devuelven el <b>valor</b>, no el nombre del día. Para saber qué día fue, hay que mirar la tabla.")}<button class="chip" data-f="=MAX(C2:C7)" style="margin:0">MAX de edades</button><button class="chip" data-f="=MIN(C2:C7)">MIN de edades</button>`},
+{k:"CONCAT",h:`<h3>CONCAT</h3><p>Une (concatena) textos y contenidos de celdas en una sola celda.</p>${S("=CONCAT(texto1; texto2; texto3; ...)")}${P([["texto1, texto2, ...","cada pieza que se quiere unir: una celda (<code>A2</code>) o un texto fijo entre comillas (<code>\" de \"</code>)"]])}<p>Las piezas se unen en el orden en que están escritas. <b>Los espacios y signos no aparecen solos</b>: hay que escribirlos entre comillas.</p>${X([["Título y autor: El principito / Saint-Exupéry",'=CONCAT(A2; " de "; B2)',"El principito de Saint-Exupéry"],["Código de producto: Bici / 2024",'=CONCAT(A2; "-"; B2)',"Bici-2024"],["Coma y espacio: A2 = Luna, B2 = Paz",'=CONCAT(B2; ", "; A2)',"Paz, Luna"]])}${W("<b>Error frecuente:</b> olvidarse de las comillas en los textos fijos, o no dejar el espacio dentro de las comillas (<code>\" de \"</code> y no <code>\"de\"</code>).","warn")}<button class="chip" data-f='=CONCAT(B2; ", "; A2)' style="margin:0">Probar con las mascotas</button>`},
+{k:"CONTAR.SI",h:`<h3>CONTAR.SI</h3><p>Cuenta cuántas celdas de un rango cumplen una condición.</p>${S("=CONTAR.SI(rango; criterio)")}${P([["rango","las celdas donde se busca"],["criterio","la condición: un texto entre comillas (<code>\"Gato\"</code>), un número, o un operador con número entre comillas (<code>\">5\"</code>)"]])}${pet}${X([["Cantidad de perros",'=CONTAR.SI(B2:B7; "Perro")',"3",1],["Cantidad de gatos",'=CONTAR.SI(B2:B7; "Gato")',"2",1],["Mascotas de más de 5 años",'=CONTAR.SI(C2:C7; ">5")',"3",1],["Mascotas de 5 años o menos",'=CONTAR.SI(C2:C7; "<=5")',"3",1]])}${W("Con números, el operador y el número van juntos entre comillas: <code>\">5\"</code>. Con texto no hace falta operador: alcanza con <code>\"Perro\"</code>.")}`},
+{k:"SUMAR.SI",h:`<h3>SUMAR.SI</h3><p>Suma solo los valores que cumplen una condición.</p>${S("=SUMAR.SI(rango_condición; criterio; rango_suma)")}${P([["rango_condición","las celdas donde se revisa la condición"],["criterio","la condición, por ejemplo <code>\"Yoga\"</code>"],["rango_suma","las celdas que se suman cuando se cumple (mismo tamaño que el primer rango)"]])}<p><b>Ejemplo: cuotas de un gimnasio</b> (columnas E:G del laboratorio)</p>${X([["Total cobrado por Yoga",'=SUMAR.SI(F2:F7; "Yoga"; G2:G7)',"54000",1],["Total cobrado por Pilates",'=SUMAR.SI(F2:F7; "Pilates"; G2:G7)',"44000",1]])}${W("<code>CONTAR.SI</code> <b>cuenta</b> cuántas veces se cumple la condición; <code>SUMAR.SI</code> <b>suma</b> un importe cuando se cumple.")}`},
+{k:"SI",h:`<h3>SI, la función nueva</h3><p>Hace que la celda muestre o calcule una cosa si se cumple una condición, y otra distinta si no se cumple.</p>${S("=SI(condición; valor_si_se_cumple; valor_si_no_se_cumple)")}${P([["condición","una comparación que da verdadero o falso, por ejemplo <code>B2>=18</code>"],["valor_si_se_cumple","lo que aparece si la condición es verdadera"],["valor_si_no_se_cumple","lo que aparece si la condición es falsa"]])}<p><b>Operadores para armar la condición</b></p><div class="scroll"><table><tr><th>Operador</th><th>Significa</th><th>Ejemplo</th></tr><tr><td><code>&gt;</code></td><td>mayor que</td><td><code>B2&gt;100</code></td></tr><tr><td><code>&lt;</code></td><td>menor que</td><td><code>B2&lt;100</code></td></tr><tr><td><code>&gt;=</code></td><td>mayor o igual que</td><td><code>B2&gt;=18</code></td></tr><tr><td><code>&lt;=</code></td><td>menor o igual que</td><td><code>B2&lt;=18</code></td></tr><tr><td><code>=</code></td><td>igual a</td><td><code>C2="Jubilado"</code></td></tr><tr><td><code>&lt;&gt;</code></td><td>distinto de</td><td><code>C2&lt;&gt;"Jubilado"</code></td></tr></table></div>${W("<b>Regla para los resultados:</b> si el resultado es un <b>texto</b>, va entre comillas: <code>\"Mayor\"</code>. Si es un <b>número o un cálculo</b>, va sin comillas: <code>A2*0,5</code> o <code>0</code>.")}<p><b>Ejemplos</b></p>
+<div class="ex"><b>1. Resultado en texto.</b> Joaquín tiene 25 y Mía 15.<br><code>=SI(B2>=18; "Mayor"; "Menor")</code> → C2 = <b>Mayor</b>, C3 = <b>Menor</b></div>
+<div class="ex"><b>2. Resultado con número.</b> Envío gratis si la compra llega a $20.000; si no, cuesta $1.500.<br><code>=SI(A2>=20000; 0; 1500)</code> → 26000 da <b>0</b>; 12000 da <b>1500</b></div>
+<div class="ex"><b>3. Comparar un texto y calcular.</b> Los jubilados pagan la mitad de una entrada de $6.000.<br><code>=SI(B2="Jubilado"; A2*0,5; A2)</code> → General = <b>6000</b>, Jubilado = <b>3000</b></div>
+<div class="ex"><b>4. Con una celda fija ($).</b> La meta (100) está en E1 y se puede cambiar sin tocar las fórmulas.<br><code>=SI(B2>=$E$1; "Meta cumplida"; "Falta")</code> → Lara (120) = <b>Meta cumplida</b>, Gabo (80) = <b>Falta</b></div>
+<div class="ex"><b>5. SI junto con CONTAR.SI.</b> Con la columna de resultados hecha, se puede contar:<br><code>=CONTAR.SI(C2:C3; "Meta cumplida")</code> → <b>1</b></div>
+<button class="chip" data-f='=SI(C2>=5; "Senior"; "Joven")' style="margin:0">Probar SI con las mascotas</button>${W("<b>Errores frecuentes con SI</b><ul style='margin:6px 0 0'><li>Texto sin comillas (<code>Mayor</code> en lugar de <code>\"Mayor\"</code>): da <code>#¿NOMBRE?</code>.</li><li>Usar <code>&gt;</code> cuando la condición incluye el límite: “18 o más” es <code>&gt;=18</code>.</li><li>Olvidar un punto y coma o dejar un paréntesis sin cerrar.</li><li>Escribir el cálculo entre comillas (<code>\"A2*0,5\"</code>): Excel lo muestra como texto.</li></ul>","warn")}`},
+{k:"Formato moneda",h:`<h3>Formato moneda</h3><p>Muestra los números como importes (con el símbolo <code>$</code>). No cambia el valor de la celda, solo cómo se ve.</p><p><b>Pasos</b></p><ol><li>Seleccioná las celdas que querés formatear.</li><li>Pestaña <b>Inicio</b>, grupo <b>Número</b>.</li><li>Hacé clic en el botón de <b>moneda</b> (<code>$</code>), o abrí “Formato de número” y elegí <b>Moneda</b>.</li><li>Con los botones de decimales mostrás más o menos decimales.</li></ol><p>Ejemplo: 125000 → <b>$ 125.000</b>; 8000 → <b>$ 8.000</b>. Probalo en el simulador del laboratorio.</p>${W("También podés aplicar el formato a celdas todavía vacías: cuando se complete la fórmula, el resultado ya aparece en formato moneda.")}`}];
+const tb=$("#tabs");let cur=0;
+function show(i){cur=i;[...tb.children].forEach((b,j)=>b.setAttribute("aria-selected",j===i));$("#fcard").innerHTML=D[i].h}
+D.forEach((d,i)=>{const b=document.createElement("button");b.className="tab";b.role="tab";b.textContent=d.k;b.onclick=()=>show(i);tb.appendChild(b)});show(0);
+/* ---------- simuladores ---------- */
+function sim(){const v=+$("#sv").value,t=+$("#st").value,o=$("#so").value,a=$("#sa").value,b=$("#sb").value;
+ const ok={">=":v>=t,">":v>t,"<=":v<=t,"<":v<t,"=":v===t,"<>":v!==t}[o];
+ $("#sf").textContent=`=SI(${v}${o}${t}; "${a}"; "${b}")`;$("#sr").textContent=ok?a:b}
+["sv","so","st","sa","sb"].forEach(i=>$("#"+i).addEventListener("input",sim));sim();
+function mon(){const v=+$("#mv").value;$("#mr").textContent=$("#mc").checked?"$ "+v.toLocaleString("es-AR"):String(v)}
+["mv","mc"].forEach(i=>$("#"+i).addEventListener("input",mon));mon();
+/* ---------- práctica ---------- */
+const Q=[
+["Sumá todas las cuotas del gimnasio (G2:G7).",123000,/SUMA\(/i,"=SUMA(G2:G7)"],
+["Calculá el promedio de edad de las mascotas (C2:C7).",32/6,/PROMEDIO\(/i,"=PROMEDIO(C2:C7)"],
+["Encontrá la edad de la mascota más grande.",9,/MAX\(/i,"=MAX(C2:C7)"],
+["Contá cuántos perros hay.",3,/CONTAR\.SI\(/i,'=CONTAR.SI(B2:B7; "Perro")'],
+["Sumá lo cobrado por la actividad Yoga.",54000,/SUMAR\.SI\(/i,'=SUMAR.SI(F2:F7; "Yoga"; G2:G7)'],
+["Unificá nombre y especie de Luna con el formato <b>Luna - Perro</b>.","Luna - Perro",/CONCAT\(/i,'=CONCAT(A2; " - "; B2)'],
+["Para Tom (C3): que diga <b>Senior</b> si tiene 5 años o más, y <b>Joven</b> si no.","Senior",/SI\(/i,'=SI(C3>=5; "Senior"; "Joven")'],
+["Para Nube (C5): que diga <b>Senior</b> si tiene 5 años o más, y <b>Joven</b> si no.","Joven",/SI\(/i,'=SI(C5>=5; "Senior"; "Joven")']];
+const done=new Set();
+$("#qs").innerHTML=Q.map((q,i)=>`<div class="q"><b>${i+1}.</b> ${q[0]}<div class="row"><input id="qi${i}" placeholder="=..." aria-label="Fórmula ${i+1}" autocomplete="off" spellcheck="false"><button class="btn" data-c="${i}">Comprobar</button><button class="btn alt" data-s="${i}">Ver respuesta</button></div><div class="fb" id="qf${i}" aria-live="polite"></div></div>`).join("");
+$("#qs").addEventListener("click",e=>{const c=e.target.dataset.c,s=e.target.dataset.s;
+ if(s!==undefined){$("#qf"+s).className="fb";$("#qf"+s).innerHTML="Una posible respuesta: <code>"+esc(Q[s][3])+"</code>"}
+ if(c===undefined)return;const q=Q[c],f=$("#qf"+c);f.className="fb no";
+ try{const f0=$("#qi"+c).value,r=ev(f0);
+  if(!q[2].test(f0)){f.textContent="Probá usando la función que pide la consigna.";return}
+  const ok=typeof q[1]==="number"?Math.abs(r-q[1])<1e-6:r===q[1];
+  if(ok){f.className="fb ok";f.textContent="Correcto. Resultado: "+fmt(r);done.add(c);$("#pb").style.width=done.size/Q.length*100+"%";$("#pt").textContent=done.size+" de "+Q.length+" resueltas"+(done.size===Q.length?". Terminaste la práctica.":"")}
+  else f.textContent="Da "+fmt(r)+". Revisá el rango y el criterio."}
+ catch(err){f.textContent=err}});
+run();
+</script></body></html>
